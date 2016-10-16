@@ -3,3 +3,6 @@ $("#sign-up").click(function(event) {
     $("#overlay").fadeIn();
 });
 
+$("#sign-up-form .exit-close").click(function(event) {
+    $("#overlay").fadeOut();
+});
