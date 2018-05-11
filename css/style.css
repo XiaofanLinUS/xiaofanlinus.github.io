@@ -13,8 +13,25 @@
 
 .jumbotron {
     border-radius: 0px;
+    background-color: rgba(0,0,0,0);
 }
 
-.navbar-inner {
-    background-color: rgba(255, 0, 0, 0.3);
+
+
+
+
+#mainNav {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    -webkit-transition: background .3s ease-in-out,padding-top .3s ease-in-out,padding-bottom .3s;
+    -moz-transition: background .3s ease-in-out,padding-top .3s ease-in-out,padding-bottom .3s;
+    transition: background .3s ease-in-out,padding-top .3s ease-in-out,padding-bottom .3s;
+    letter-spacing: 1px;
+    border-bottom: none;
+    background: 0 rgba(0,0,50,0.5);
+}
+
+.main #mainNav {
+    background: 0 0;
+
 }
