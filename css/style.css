@@ -28,7 +28,7 @@
     transition: background .3s ease-in-out,padding-top .3s ease-in-out,padding-bottom .3s;
     letter-spacing: 1px;
     border-bottom: none;
-    background: 0 rgba(0,0,50,0.5);
+    background: 0 rgba(0,0,50,1);
 }
 
 .main #mainNav {
