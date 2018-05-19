@@ -67,11 +67,11 @@
       
       <ol>
 	<li>
-		<h4>Skeleton Code: </h4>
-		<p> The base code of our program is taken from the provided skeleton code in the previous iterations of the CSE 167 class. 
-		This code contains the basic initialization process to set up an OpenGL window. We build upon this code by adding a file parser, a Mesh class, and basic shaders. 
-		As a result, the program is able to display the model, centered and scaled to a 10x10x10 cube, on a solid black background. 
-		</p>
+	  <h4>Skeleton Code: </h4>
+	  <p> The base code of our program is taken from the provided skeleton code in the previous iterations of the CSE 167 class. 
+	    This code contains the basic initialization process to set up an OpenGL window. We build upon this code by adding a file parser, a Mesh class, and basic shaders. 
+	    As a result, the program is able to display the model, centered and scaled to a 10x10x10 cube, on a solid black background. 
+	  </p>
 	</li>
 
 	<li>
@@ -121,7 +121,7 @@
 	    three important concerns. Making the code simple allows it to be maintainable and fast enough to perform the mesh simplification and
 	    progressive meshes. The follwing picture is the simplified UML diagram of our data structure relationship.
 	  </p>
-		
+	  
 	  <p>
 	    For the reasons stated above, we decided to use the simple adjacency list data structure. We have three main classes: Vertex, Face, and Mesh. 
 	    Each of these classes represent what their names suggest (i.e. Vertex represents a vertex). The Mesh class is the container class which holds a list of vertices and faces that make up the mesh, 
@@ -140,7 +140,7 @@
 	  <p class="text-left my-2"><small>UML of data structure</small></p>
 
 	</li>
-	      
+	
 	<li>
 	  <h4>Data Import: </h4>
 	  <p> To read in the model's data from the OFF files, we mainly use a stringstream class. We first create a Mesh object, which contains an array of Vertex pointers and another array of Face pointers.
@@ -149,39 +149,39 @@
 	    This array is then passed to the VBO and EBO for OpenGL to render the model.
 	  </p>
 	</li>
-	      
 	
-	  <h4>Run-time Analysis: </h4>
-	  <ol>
-	    <li >
-	      <p class="m-0">Picking an Edge: </p>
-	      <p>
-		To store the Errdge objects, we use a min heap. Initializing this heap with all the possible edges takes a single O(N log N) time. Picking an edge in each iteration of an edge collapse takes O(log N) time. And finally, adding the new edges (after collapsing edges) will also take O(log N) time.
-	      </p>
-	    </li>
-	    <li>
-	      <p class="m-0">Updating Adjacency List: </p>
-	      <p>
-		Because we deal with pointers and only update locally, with respect to the edge, updating the adjacency list should run in constant time. 
-		To update the adjcency list of the faces and vertices that were affected by the edge collapse, we only have to replace the pointer information, which is just a value assignment. The total number of faces and vertices that have to be updated is also constant since they are simply the neighbors of the vertices that were collapsed. 
-		As for the faces that collapse as a result of the edge collapse, we toggle a flag in the object that indicates the face being invalid and not part of the simplified model. These show that updating the adjacency list takes constant time.
-	      </p>
-	    </li>
-	    <li>
-	      <p class="m-0">Total: </p>
-	      <p>
-		 From the analyses above, performing an edge collapse will take O(log N) time with respect to the number of edges. However, we note that for smaller values, recalculating the error and optimal vertex position might dominate the run time since it uses matrix operations. 
-		 As for vertex splits, the runtime should be constant since we maintain a history stack that shows which vertices split into which other vertices. This means that there is no calculation required for vertex splits.
-	      </p>
-	    </li>   
-	  </ol>
-	</li>
+	
+	<h4>Run-time Analysis: </h4>
+	<ol>
+	  <li >
+	    <p class="m-0">Picking an Edge: </p>
+	    <p>
+	      To store the Errdge objects, we use a min heap. Initializing this heap with all the possible edges takes a single O(N log N) time. Picking an edge in each iteration of an edge collapse takes O(log N) time. And finally, adding the new edges (after collapsing edges) will also take O(log N) time.
+	    </p>
+	  </li>
+	  <li>
+	    <p class="m-0">Updating Adjacency List: </p>
+	    <p>
+	      Because we deal with pointers and only update locally, with respect to the edge, updating the adjacency list should run in constant time. 
+	      To update the adjcency list of the faces and vertices that were affected by the edge collapse, we only have to replace the pointer information, which is just a value assignment. The total number of faces and vertices that have to be updated is also constant since they are simply the neighbors of the vertices that were collapsed. 
+	      As for the faces that collapse as a result of the edge collapse, we toggle a flag in the object that indicates the face being invalid and not part of the simplified model. These show that updating the adjacency list takes constant time.
+	    </p>
+	  </li>
+	  <li>
+	    <p class="m-0">Total: </p>
+	    <p>
+	      From the analyses above, performing an edge collapse will take O(log N) time with respect to the number of edges. However, we note that for smaller values, recalculating the error and optimal vertex position might dominate the run time since it uses matrix operations. 
+	      As for vertex splits, the runtime should be constant since we maintain a history stack that shows which vertices split into which other vertices. This means that there is no calculation required for vertex splits.
+	    </p>
+	  </li>   
+	</ol>
+
 
 	<li>
 	  <h4>Memory Management: </h4>
 	  <p>In the edge collapse function, instead of deleting, we mark each vertex and face that are not going to be rendered as "dead". These "dead" vertices and faces are then skipped when transferring the vertices and faces into arrays for the VBO and EBO.
-	     The reason we did this is because of two things, simplifying the vertex split function and consolidating the dynamic memory. By keeping the "dead' vertices and faces, we avoid having to recreate these objects and instead, simply toggle a flag. 
-	     Also, by keeping these dynamically allocated objects in a single container, we avoid having to release memory in many different places in the code. Instead, freeing the memory can be done in the end, with a simple for loop.
+	    The reason we did this is because of two things, simplifying the vertex split function and consolidating the dynamic memory. By keeping the "dead' vertices and faces, we avoid having to recreate these objects and instead, simply toggle a flag. 
+	    Also, by keeping these dynamically allocated objects in a single container, we avoid having to release memory in many different places in the code. Instead, freeing the memory can be done in the end, with a simple for loop.
 	  </p>	  
       </ol>
 
@@ -215,22 +215,22 @@
 
 	<li>
 	  <h4>Corner Case (Fins): </h4>
-	    <p>
-	      The algorithm described above is not enough for some special cases, which can lead to a fins appearing on the surface of the model, making the model
-	      appear disasterous and also influencing the error matrics calculation in some areas. See the following picture taken from the assignment write-up.
-	    </p>
+	  <p>
+	    The algorithm described above is not enough for some special cases, which can lead to a fins appearing on the surface of the model, making the model
+	    appear disasterous and also influencing the error matrics calculation in some areas. See the following picture taken from the assignment write-up.
+	  </p>
 
-	    <div class="row pb-5">
-	      <div class="col-md-12">
-		<img src="./images/special-case.png" class="img-fluid" alt="special case for edge collapsing">
-	      </div>
+	  <div class="row pb-5">
+	    <div class="col-md-12">
+	      <img src="./images/special-case.png" class="img-fluid" alt="special case for edge collapsing">
 	    </div>
-	    
-	    <h5>Our Solution: </h5>
-          <p>We observe from the pictures that the fin is caused by two faces sharing the same vertex set after the edge collapse.
+	  </div>
+	  
+	  <h5>Our Solution: </h5>
+	  <p>We observe from the pictures that the fin is caused by two faces sharing the same vertex set after the edge collapse.
 	    This gives us a simple algorithm to detect these fins and remove them accordingly.
 	  </p>
-		
+	  
 	  <p>Adding on to the edge collapse algorithm above, just after we replace v1 or v2 with v', we check for possible fins.
 	    We do this through the use of a nested-for loop that compares each face adjacent to v' with every other face adjacent to v'. 
 	    For each pair of faces, we add both faces' adjacent vertices into an unordered set. If, after inserting all the vertices from two different active faces into the set, the size of the set still remains as 3, it means that these two faces share the same vertex set (both are fins).
@@ -300,7 +300,7 @@
 	</div>
 
       </dl>
-      
+
       <ol>
 	<li>
 	  <h4>Error Quadric Calculation: </h4>
@@ -344,7 +344,7 @@
 	    edge removals.
 	  </p>
 	  <p> After removing all edges of the mesh, we call updateVFSets() to store the valid faces and vertercies for later dumpping.</p>
-	  	 
+	  
 	</li>
 
 	<li>
@@ -364,121 +364,121 @@
 	</div>
 	
 	<div class="row pt-2 pb-5">
-	    
-	    <div class="col-md-6">
-	      <img src="./images/a-25528-b-g.png" class="img-fluid" >
-	    </div>
-	    <div class="col-md-6">
-	      <img src="./images/a-25528-b-w.png" class="img-fluid">
-	    </div>
-
-	    <div class="col-md-6">
-	      <img src="./images/a-25528-f-g.png" class="img-fluid" >
-	    </div>
-	    <div class="col-md-6">
-	      <img src="./images/a-25528-f-w.png" class="img-fluid">
-	    </div>
-	    <p class="text-center m-auto"><small>25528 faces</small></p>
-
-	    
+	  
+	  <div class="col-md-6">
+	    <img src="./images/a-25528-b-g.png" class="img-fluid" >
+	  </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-25528-b-w.png" class="img-fluid">
 	  </div>
 
-	  <div class="row py-5">
-	    <div class="col-md-6">
-	      <img src="./images/a-10126-b-g.png" class="img-fluid" >
-	    </div>
-	    <div class="col-md-6">
-	      <img src="./images/a-10126-b-w.png" class="img-fluid">
-	    </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-25528-f-g.png" class="img-fluid" >
+	  </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-25528-f-w.png" class="img-fluid">
+	  </div>
+	  <p class="text-center m-auto"><small>25528 faces</small></p>
 
-	    
-	    <div class="col-md-6">
-	      <img src="./images/a-10126-f-g.png" class="img-fluid" >
-	    </div>
-	    <div class="col-md-6">
-	      <img src="./images/a-10126-f-w.png" class="img-fluid">
-	    </div>
-	    <p class="text-center m-auto"><small>10126 faces</small></p>
+	  
+	</div>
 
+	<div class="row py-5">
+	  <div class="col-md-6">
+	    <img src="./images/a-10126-b-g.png" class="img-fluid" >
+	  </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-10126-b-w.png" class="img-fluid">
 	  </div>
 
-	  <div class="row py-5">
-	    <div class="col-md-6">
-	      <img src="./images/a-5004-b-g.png" class="img-fluid" >
-	    </div>
-	    <div class="col-md-6">
-	      <img src="./images/a-5004-b-w.png" class="img-fluid">
-	    </div>
+	  
+	  <div class="col-md-6">
+	    <img src="./images/a-10126-f-g.png" class="img-fluid" >
+	  </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-10126-f-w.png" class="img-fluid">
+	  </div>
+	  <p class="text-center m-auto"><small>10126 faces</small></p>
 
-	    
-	    <div class="col-md-6">
-	      <img src="./images/a-5004-f-g.png" class="img-fluid" >
-	    </div>
-	    <div class="col-md-6">
-	      <img src="./images/a-5004-f-w.png" class="img-fluid">
-	    </div>
-	    <p class="text-center m-auto"><small>5004 faces</small></p>
+	</div>
 
+	<div class="row py-5">
+	  <div class="col-md-6">
+	    <img src="./images/a-5004-b-g.png" class="img-fluid" >
+	  </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-5004-b-w.png" class="img-fluid">
 	  </div>
 
-
-	  <div class="row py-5">
-	    <div class="col-md-6">
-	      <img src="./images/a-1628-b-g.png" class="img-fluid" >
-	    </div>
-	    <div class="col-md-6">
-	      <img src="./images/a-1628-b-w.png" class="img-fluid">
-	    </div>
-
-	    
-	    <div class="col-md-6">
-	      <img src="./images/a-1628-f-g.png" class="img-fluid" >
-	    </div>
-	    <div class="col-md-6">
-	      <img src="./images/a-1628-f-w.png" class="img-fluid">
-	    </div>
-	    <p class="text-center m-auto"><small>1628 faces</small></p>
-
+	  
+	  <div class="col-md-6">
+	    <img src="./images/a-5004-f-g.png" class="img-fluid" >
 	  </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-5004-f-w.png" class="img-fluid">
+	  </div>
+	  <p class="text-center m-auto"><small>5004 faces</small></p>
+
+	</div>
+
+
+	<div class="row py-5">
+	  <div class="col-md-6">
+	    <img src="./images/a-1628-b-g.png" class="img-fluid" >
+	  </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-1628-b-w.png" class="img-fluid">
+	  </div>
+
+	  
+	  <div class="col-md-6">
+	    <img src="./images/a-1628-f-g.png" class="img-fluid" >
+	  </div>
+	  <div class="col-md-6">
+	    <img src="./images/a-1628-f-w.png" class="img-fluid">
+	  </div>
+	  <p class="text-center m-auto"><small>1628 faces</small></p>
+
+	</div>
 
 
 
 
       </ol>
-	  
-	  
-	  
-	  <dl class="row">
+
+
+
+      <dl class="row">
 	<h1 class="display-5 col-md-8">Part 5: Progressive Meshes </h1>
 	<div class="col-md-4 pt-5">
 	  <p class="text-left">Related Class: Vertex</p>
 	</div>
 
       </dl>
-      
+
       <ol>
 	<li>
-		<h4>Vertex Split Algorithm: </h4>
-		<p> To simplify the vertex split function, we add some extra fields in the Vertex class. This includes two pointers to the vertices it is merged from and a pointer to the vertex it merges to. 
-		In addition to that, five new adjacency lists are added: one for the faces common to both v1 and v2, one for the faces adjacent to only v1, another for the faces adjacent to only v2, one for the faces adjacent to v1 that became fins, 
-		and another for the faces adjacent to v2 that became fins. Aside from these, we also add a stack in the Mesh class that represents the history of edge collapses. It stores the v' in each iteration of the edge collapse function.
-		</p>
-		
-		<p> Doing these greatly simplifies the vertex split process, such that it becomes a question of updating the adjacency list. 
-		To split a vertex v', we iterate through each of the adjacency lists and reverse the update process done in the edge collapse function. For the faces that are adjacent to only either v1 or v2, 
-		we replace v' with the respective vertex in the face's adjacency list. For the faces common to both v1 and v2, we simply have them reborn (opposite of terminate) and add the face back to all of its vertices' adjacency list. 
-		As for the fins, we do all three: have the face be reborn, replace v' with the respective vertex, and add the face back to all its vertices' adjacency list. Next, we recalculate both the faces' and the neighboring vertices' normals. 
-		Lastly, we terminate the merged vertex v' and revive the previous vertices v1 and v2.
-		</p>
-		
-		<div class="row pb-5">
-	    		<div class="col-md-6">
-	      		<iframe width="480" height="270" src="https://www.youtube.com/embed/sEhS0Al0-CU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-	    		</div>
-	    		<div class="col-md-6">
-	      		<iframe allowfullscreen="" frameborder="0" height="270" src="https://www.youtube.com/embed/b3nqMcoIoZM" width="480"></iframe>
-	    		</div>
-	  	</div>
+	  <h4>Vertex Split Algorithm: </h4>
+	  <p> To simplify the vertex split function, we add some extra fields in the Vertex class. This includes two pointers to the vertices it is merged from and a pointer to the vertex it merges to. 
+	    In addition to that, five new adjacency lists are added: one for the faces common to both v1 and v2, one for the faces adjacent to only v1, another for the faces adjacent to only v2, one for the faces adjacent to v1 that became fins, 
+	    and another for the faces adjacent to v2 that became fins. Aside from these, we also add a stack in the Mesh class that represents the history of edge collapses. It stores the v' in each iteration of the edge collapse function.
+	  </p>
+	  
+	  <p> Doing these greatly simplifies the vertex split process, such that it becomes a question of updating the adjacency list. 
+	    To split a vertex v', we iterate through each of the adjacency lists and reverse the update process done in the edge collapse function. For the faces that are adjacent to only either v1 or v2, 
+	    we replace v' with the respective vertex in the face's adjacency list. For the faces common to both v1 and v2, we simply have them reborn (opposite of terminate) and add the face back to all of its vertices' adjacency list. 
+	    As for the fins, we do all three: have the face be reborn, replace v' with the respective vertex, and add the face back to all its vertices' adjacency list. Next, we recalculate both the faces' and the neighboring vertices' normals. 
+	    Lastly, we terminate the merged vertex v' and revive the previous vertices v1 and v2.
+	  </p>
+	  
+	  <div class="row pb-5">
+	    <div class="col-md-6">
+	      <iframe width="480" height="270" src="https://www.youtube.com/embed/sEhS0Al0-CU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+	    </div>
+	    <div class="col-md-6">
+	      <iframe allowfullscreen="" frameborder="0" height="270" src="https://www.youtube.com/embed/b3nqMcoIoZM" width="480"></iframe>
+	    </div>
+	  </div>
 	</li>
 
 	
@@ -486,7 +486,7 @@
 
     </div>
 
-    
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
