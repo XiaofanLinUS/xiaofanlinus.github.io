@@ -452,6 +452,44 @@
 	  </p>
 	</li>
       </ol>
+	  
+	  
+	  
+	  <dl class="row">
+	<h1 class="display-5 col-md-8">Part 5: Progressive Meshes </h1>
+	<div class="col-md-4 pt-5">
+	  <p class="text-left">Related Class: Vertex</p>
+	</div>
+
+      </dl>
+      
+      <ol>
+	<li>
+		<h4>Vertex Split Algorithm: </h4>
+		<p> To simplify the vertex split function, we add some extra fields in the Vertex class. This includes two pointers to the vertices it is merged from and a pointer to the vertex it merges to. 
+		In addition to that, five new adjacency lists are added: one for the faces common to both v1 and v2, one for the faces adjacent to only v1, another for the faces adjacent to only v2, one for the faces adjacent to v1 that became fins, 
+		and another for the faces adjacent to v2 that became fins. Aside from these, we also add a stack in the Mesh class that represents the history of edge collapses. It stores the v' in each iteration of the edge collapse function.
+		</p>
+		
+		<p> Doing these greatly simplifies the vertex split process, such that it becomes a question of updating the adjacency list. 
+		To split a vertex v', we iterate through each of the adjacency lists and reverse the update process done in the edge collapse function. For the faces that are adjacent to only either v1 or v2, 
+		we replace v' with the respective vertex in the face's adjacency list. For the faces common to both v1 and v2, we simply have them reborn (opposite of terminate) and add the face back to all of its vertices' adjacency list. 
+		As for the fins, we do all three: have the face be reborn, replace v' with the respective vertex, and add the face back to all its vertices' adjacency list. Next, we recalculate both the faces' and the neighboring vertices' normals. 
+		Lastly, we terminate the merged vertex v' and revive the previous vertices v1 and v2.
+		</p>
+		
+		<div class="row pb-5">
+	    		<div class="col-md-6">
+	      		<iframe width="560" height="315" src="https://www.youtube.com/embed/sEhS0Al0-CU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+	    		</div>
+	    		<div class="col-md-6">
+	      		<iframe allowfullscreen="" frameborder="0" height="270" src="https://www.youtube.com/embed/b3nqMcoIoZM" width="480"></iframe>
+	    		</div>
+	  	</div>
+	</li>
+
+	
+      </ol>
 
     </div>
 
