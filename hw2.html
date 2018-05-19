@@ -114,19 +114,21 @@
       </dl>
       <ol>
 	<li>
-	  <h4>Overall View: </h4>
-	  <p> To implement a good data structure, the mesh manipulation is not the only one key we need to deal with. The runtime of edge collapsing and
-	    vertices splitting, the memory managements of deleting faces and vertices and the property maintaing of the connectivity can also be other
-	    three important conerns for the code to be simple and maintainable and for the program to run fast enough to do the simplication on meshes and
-	    progressive model. The follwing picture is the UML diagram of our datastructure relationships.
+	  <h4>Overview: </h4>
+	  <p> To implement a good data structure, the mesh manipulation is not the only key we need to deal with. The runtime of an edge collapse and a
+	    vertex split, the memory management of faces and vertices, and the proper maintenance of the connectivity structure are also
+	    three important concerns. Making the code simple allows it to be maintainable and fast enough to perform the mesh simplification and
+	    progressive meshes. The follwing picture is the simplified UML diagram of our data structure relationship.
 	  </p>
 		
 	  <p>
-	    The connectivity information is retrived by accesing the adjacency lists of Face and Vertex objects.	    
-	    Each face is holding an adjacency array of the vertices pointers that is included. And, each vertercies is holding an adjacency array of the
-	    faces that included it.
-	    While Errdge is only used for storing the information of two vertercies to be collapsed, the position of new merged vertices and the corrosponding
-	    error, it has no essential role of the mesh strucutures. It can be recalculated after each removal of edges. Thus, it can be a stack objects.
+	    For the reasons stated above, we decided to use the simple adjacency list data structure. We have three main classes: Vertex, Face, and Mesh. 
+	    Each of these classes represent what their names suggest (i.e. Vertex represents a vertex). The Mesh class is the container class which holds a list of vertices and faces that make up the mesh, 
+	    and the connectivity information is stored within the Face and Vertex classes. That is to say,     
+	    each Face holds a list of Vertex pointers that make up the face, while each Vertex holds a list of the
+	    Faces that are adjacent to it. Errdge, on the other hand, is a supplementary class that is only used for storing the information of an edge collapse. 
+	    This includes the two vertices that make up the edge, the position of new merged vertex, and the error corresponding to the edge collapse. 
+	    This class facilitates the recalculation of the error whenever a new edge is collapsed, making it a good auxiliary class for containers such as stacks or queues.
 	  </p>
 
 	  <div class="row pb-5">
@@ -140,41 +142,45 @@
 	      
 	<li>
 	  <h4>Data Import: </h4>
-	  <p> To begin, we use a stringstream class to read in data from the OFF files. We first create two arrays(vector) of Vertex pointers and Face pointers.
-	    For each vertex, we create a Vertex on the heap and pass in its coordinates x, y, z in the space. At the same time, we set the vertex with its index
-	    on the vector array. And, for each face, we create a Face on the heap passing in the vertiex pointers by getting them from the vertices array
-	    using index parsed from the file. After parsing, we dump all the positions from Vertices and the indices from Faces from vector to array.
-	    Then, pass the arrays to VBO and EBO for OpenGL to render the model.
+	  <p> To read in the model's data from the OFF files, we mainly use a stringstream class. We first create a Mesh object, which contains an array of Vertex pointers and another array of Face pointers.
+	    For each line in the file specifying a vertex, we create a Vertex object on the heap, pass in its x, y, and z coordinates, and add this to the Mesh. Next, for each line in the file specifying a face, we create a Face object on the heap, pass in the Vertex pointers from the Mesh's vertex array
+	    using the indices parsed from the file, and add this Face to the Mesh. We then add this Face to the adjacency list of each of its vertices. After parsing (and after every edge collapse or vertex split), we dump all the positions of the vertices and all the indices of the faces' vertices from the Mesh to an array.
+	    This array is then passed to the VBO and EBO for OpenGL to render the model.
 	  </p>
 	</li>
-
-	<li>
+	      
+	
 	  <h4>Run-time Analysis: </h4>
 	  <ol>
 	    <li >
-	      <p class="m-0">Per Operation: </p>
+	      <p class="m-0">Picking an Edge: </p>
 	      <p>
-		Apart from popping the "edge" with the least error which would take O(logN), anyother operation on Vertices array and Faces set only take O(N)
-		on average
+		To store the Errdge objects, we use a min heap. Initializing this heap with all the possible edges takes a single O(N log N) time. Picking an edge in each iteration of an edge collapse takes O(log N) time. And finally, adding the new edges (after collapsing edges) will also take O(log N) time.
 	      </p>
 	    </li>
 	    <li>
-	      <p class="m-0">Total Operations: </p>
+	      <p class="m-0">Updating Adjacency List: </p>
 	      <p>
-		Among each update on set and priority queue as well as dumpping, they all require O(N). O(N) for invalid vertices and faces deletion from the
-		heap. O(N) for recalculating edges with error from faces. O(N) for building priority heap on an array. O(N) for moving data from adavanced
-		data structures	to regular array for dumpping. For edges' removals, collapsing N edges will take O(NlogN) at most.
+		Because we deal with pointers and only update locally, with respect to the edge, updating the adjacency list should run in constant time. 
+		To update the adjcency list of the faces and vertices that were affected by the edge collapse, we only have to replace the pointer information, which is just a value assignment. The total number of faces and vertices that have to be updated is also constant since they are simply the neighbors of the vertices that were collapsed. 
+		As for the faces that collapse as a result of the edge collapse, we toggle a flag in the object that indicates the face being invalid and not part of the simplified model. These show that updating the adjacency list takes constant time.
 	      </p>
 	    </li>
+	    <li>
+	      <p class="m-0">Total: </p>
+	      <p>
+		 From the analyses above, performing an edge collapse will take O(log N) time with respect to the number of edges. However, we note that for smaller values, recalculating the error and optimal vertex position might dominate the run time since it uses matrix operations. 
+		 As for vertex splits, the runtime should be constant since we maintain a history stack that shows which vertices split into which other vertices. This means that there is no calculation required for vertex splits.
+	      </p>
+	    </li>   
 	  </ol>
 	</li>
 
 	<li>
 	  <h4>Memory Management: </h4>
-	  <p>In collapsing edges function, we mark each vertercies and faces that are not going to be rendered as dead. And after removals, in updateVFsets
-	    function, we update each vertercies and faces status to remove their dead adjacent vertercies and faces from the array. Then, mark the face and
-	    vertex with 0 adjacency as dead again. Afterawrd, push each dead vertercies and faces to a set for later deletion of them from the memory. Then,
-	    we dump the rest of vertercies and faces for rendering.
+	  <p>In the edge collapse function, instead of deleting, we mark each vertex and face that are not going to be rendered as "dead". These "dead" vertices and faces are then skipped when transferring the vertices and faces into arrays for the VBO and EBO.
+	     The reason we did this is because of two things, simplifying the vertex split function and consolidating the dynamic memory. By keeping the "dead' vertices and faces, we avoid having to recreate these objects and instead, simply toggle a flag. 
+	     Also, by keeping these dynamically allocated objects in a single container, we avoid having to release memory in many different places in the code. Instead, freeing the memory can be done in the end, with a simple for loop.
 	  </p>	  
       </ol>
 
@@ -189,7 +195,7 @@
       </dl>
       <ol>
 	<li>
-	  <h4>Edge Collapsing Function: </h4>
+	  <h4>Edge Collapsing Algorithm: </h4>
 	  <p>
 	    In our implementation, the edge collasping function take in a Errdge object. We first retrive two vertercies to be removed from the object and
 	    make a new vertex on heap by using the new positoin with least error from the object.
