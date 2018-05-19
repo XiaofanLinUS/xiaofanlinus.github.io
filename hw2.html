@@ -48,7 +48,7 @@
       <div class="container">
 	
 	<h1 class="display-4">Mesh Simplication & Progressive Recover</h1>
-	<p class="lead">We are implementing Garland’s 97 paper & Hoppe 96 paper to do a mesh simplification by collapsing edges between two vertices according to a error metrics calculation and recovering the simplified mesh model by splitting merged vertices to two vertices where we have done the edges collapse before. </p>
+	<p class="lead">We reference Garland’s 97 paper & Hoppe's 96 paper to implement a mesh simplification by collapsing edges between two vertices according to an error metrics calculation and recovering the original mesh model by splitting the vertices that have been collapsed before. </p>
 	<hr class="my-4">
       </div>
 
@@ -67,13 +67,11 @@
       
       <ol>
 	<li>
-	  <h4>Import Data: </h4>
-	  <p> To begin with, we use a stringstream class to read in data from OFF files. We first create two arrays(vector) of Vertex pointers and Face pointers.
-	    For each vertex, we create a Vertex on the heap and pass in its coordinates x, y, z in the space. At the same time, we set the vertex with its index
-	    on the vector array. And, for each face, we create a Face on the heap passing in the vertiex pointers by getting them from the vertices array
-	    using index parsed from the file. After parsing, we dump all the positions from Vertices and the indices from Faces from vector to array.
-	    Then, pass the arrays to VBO and EBO for OpenGL to render the model.
-	  </p>
+		<h4>Skeleton Code: </h4>
+		<p> The base code of our program is taken from the provided skeleton code in the previous iterations of the CSE 167 class. 
+		This code contains the basic initialization process to set up an OpenGL window. We build upon this code by adding a file parser, a Mesh class, and basic shaders. 
+		As a result, the program is able to display the model, centered and scaled to a 10x10x10 cube, on a solid black background. 
+		</p>
 	</li>
 
 	<li>
@@ -122,6 +120,7 @@
 	    three important conerns for the code to be simple and maintainable and for the program to run fast enough to do the simplication on meshes and
 	    progressive model. The follwing picture is the UML diagram of our datastructure relationships.
 	  </p>
+		
 	  <p>
 	    The connectivity information is retrived by accesing the adjacency lists of Face and Vertex objects.	    
 	    Each face is holding an adjacency array of the vertices pointers that is included. And, each vertercies is holding an adjacency array of the
@@ -138,7 +137,16 @@
 	  <p class="text-left my-2"><small>UML of data structure</small></p>
 
 	</li>
-
+	      
+	<li>
+	  <h4>Data Import: </h4>
+	  <p> To begin, we use a stringstream class to read in data from the OFF files. We first create two arrays(vector) of Vertex pointers and Face pointers.
+	    For each vertex, we create a Vertex on the heap and pass in its coordinates x, y, z in the space. At the same time, we set the vertex with its index
+	    on the vector array. And, for each face, we create a Face on the heap passing in the vertiex pointers by getting them from the vertices array
+	    using index parsed from the file. After parsing, we dump all the positions from Vertices and the indices from Faces from vector to array.
+	    Then, pass the arrays to VBO and EBO for OpenGL to render the model.
+	  </p>
+	</li>
 
 	<li>
 	  <h4>Run-time Analysis: </h4>
