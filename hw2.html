@@ -182,7 +182,8 @@
 	  <p>In the edge collapse function, instead of deleting, we mark each vertex and face that are not going to be rendered as "dead". These "dead" vertices and faces are then skipped when transferring the vertices and faces into arrays for the VBO and EBO.
 	    The reason we did this is because of two things, simplifying the vertex split function and consolidating the dynamic memory. By keeping the "dead' vertices and faces, we avoid having to recreate these objects and instead, simply toggle a flag. 
 	    Also, by keeping these dynamically allocated objects in a single container, we avoid having to release memory in many different places in the code. Instead, freeing the memory can be done in the end, with a simple for loop.
-	  </p>	  
+	  </p>
+	</li>
       </ol>
 
 
