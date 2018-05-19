@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>CSE190-Computer Vision Archive</title>
+  </head>
+  <body>
+    
+    
+    
+
+    <div class="container-fluid px-0 m-0 navbar navbar-dark navbar-expand-lg nav-color" id="mainNav">
+      <!-- Content here -->
+      <nav class="container m-0">
+	<!-- Navbar content -->
+	
+	<a class="navbar-brand mr-5 font-weight-bold text-warning" href="#">Computer Vision</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	  <span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	  <ul class="navbar-nav mr-auto">
+	    <li class="nav-item active">
+	      <a class="nav-link" href="./index.html#">Home <span class="sr-only">(current)</span></a>
+	    </li>
+	    <li class="nav-item dropdown">
+	      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		Assignments
+	      </a>
+
+	    </li>
+	  </ul>
+	</div>
+	
+      </nav>
+      <!-- end of container -->
+    </div>
+
+    <div class="jumbotron">
+
+      <div class="container">
+	
+	<h1 class="display-5">Optical Flow, Image Classification & Support Vector Machine</h1>
+	<hr class="my-4">
+      </div>
+
+    </div>
+    
+
+    <div class="essay container">
+      
+      <h2>Part 1: Optical Flow </h2>
+      <h4>General Idea: </h4>
+      <p class="lead ml-1 my-3"> Optical Flow is a method to describe a objact shape by analyzing its movements on a background static scene
+	given multiple frames of images. Here, we are implementing the Lucas-Kanade method for estimating optical flow. Given two Image I1, I2.
+	We find each pixel's movement (u, v) by solving the following equation.
+      </p>
+
+      
+      <div class="row pb-5">
+	<div class="col-md-12">
+	  <img src="./images/equation.png" class="img" width="500" alt="uml of data structure">
+	</div>
+      </div>
+
+      <p class="text-left my-2">
+        <small>Equation to be solved for u and v</small>
+      </p>
+
+      <h4>Assumptions: </h4>
+      <ol>
+	<li>
+	  <p class="mb-0">A patch of pixels has the same movement (u, v) sharing same color. </p>
+	  <p class="pt-0 mt-0">So, we can find (u, v) given more than one equations. Since, we have a region of pixels having the same equation
+	    but with different Ix and Iy values. We call such patch sharing same color and movement window.
+	  </p>
+	</li>
+	<li>Movement of Patch is small. So, we can calculate derivative terms
+	  Thus, we are able to approximate I(x+u,y+v,t+1) = I(x,y,t+1) + Ix*u + Iy*v.
+	</li>
+      </ol>
+
+      <h4>Original Images:</h4>
+      <div class="row">
+
+	<div class="col-md-3">
+	  <img src="./computer_vision/hw2/res/im1.jpg" class="img-fluid" width="250">
+	  <p class="text-left my-2">
+            <small>image 1</small>
+	  </p>
+	</div>
+
+	<div class="col-md-3">
+	  <img src="./computer_vision/hw2/res/im2.jpg" class="img-fluid" width="250">
+	  <p class="text-left my-2">
+            <small>image 2</small>
+	  </p>
+	</div>
+	
+	<div class="col-md-3">
+	  <img src="./computer_vision/hw2/res/im3.jpg" class="img-fluid" width="250">
+	  <p class="text-left my-2">
+            <small>image 3</small>
+	  </p>
+	</div>
+
+	<div class="col-md-3">
+	  <img src="./computer_vision/hw2/res/im4.jpg" class="img-fluid" width="250">
+	  <p class="text-left my-2">
+            <small>image 4</small>
+	  </p>
+	</div>
+
+      </div>
+      <h4 class="mt-3">Four different windowsize of equations for image 1 and 2:</h4>
+
+
+      <div class="row">
+
+	<div class="col-md-6">
+	  <img src="./computer_vision/hw2/res/google_2_30.png" class="img-fluid">
+	  <p class="text-center my-2">
+            <small>Size 30x30</small>
+	  </p>
+
+	</div>
+	<div class="col-md-6">
+	  <img src="./computer_vision/hw2/res/google_2_40.png" class="img-fluid">
+	  <p class="text-center my-2">
+            <small>Size 40x40</small>
+	  </p>
+	</div>
+
+      </div>
+      <div class="row">
+
+	<div class="col-md-6">
+	  <img src="./computer_vision/hw2/res/google_2_50.png" class="img-fluid">
+	  <p class="text-center my-2">
+            <small>Size 50x50</small>
+	  </p>
+	</div>
+	<div class="col-md-6">
+	  <img src="./computer_vision/hw2/res/google_2_60.png" class="img-fluid">
+	  <p class="text-center my-2">
+            <small>Size 60x60</small>
+	  </p>
+	</div>
+      </div>
+      <h4 class="mt-3">Observations:</h4>
+      <p> From the picture, we can see the arrow are mimicing the Google
+	sign shape. With larger windowsize, larger patches in the image will share the same arrow direction. However, if it gets too large,
+	the shape described by the flow are more "blur" and too general for us to see the details. See the example for 60x60.
+	On the other way, if it gets too small,
+	the arrow will become dots and not able to describe the shape of the sign, since with a small region, a lot of pixel sharing the same color
+	then the equation will result in a small (u,v) values close to 0 for its mistaking the pixel not moving. See the example for 30x30.
+      </p>
+      <h4 class="mt-3">Optimal Flows for different pair of pictures (im1, im2), (im1, im3), (im1, im4):</h4>
+
+      <div class="row">
+
+	<div class="col-md-4">
+	  <img src="./computer_vision/hw2/res/google_2_40.png" class="img-fluid">
+	  <p class="text-center my-2">
+            <small>(im1, im2) with 40x40 size</small>
+	  </p>
+	</div>
+	<div class="col-md-4">
+	  <img src="./computer_vision/hw2/res/google_3_40.png" class="img-fluid">
+	  <p class="text-center my-2">
+            <small>(im1, im3) with 40x40 size</small>
+	  </p>
+	</div>
+	<div class="col-md-4">
+	  <img src="./computer_vision/hw2/res/google_4_45.png" class="img-fluid">
+	  <p class="text-center my-2">
+            <small>(im1, im4) with 45x45 size</small>
+	  </p>
+	</div>
+
+      </div>
+
+      <p>The best match for (im1, im2) is 40 x 40 while I have trouble finding good flow sizes for (im1, im3) and (im1, im4). For im1 and im2, the movement between
+	them are small which flows the assumption I mentioned before. However, im3 and im4 both have very significant differences from im1. It's very hard for the
+	algorithm works for (im1, im3) and (im1, im4). For im3, the abrupt scaling jeopardizes the flow calculation and also for im4, the dramatic rotation does
+	so too. Since im3 and im4 violates our second assmuption, we fail to find a consistent flow for them.
+    </div>
+
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

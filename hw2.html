@@ -257,7 +257,188 @@
 	
       </ol>
 
+
+
+
+
+
+
+
+
+
+
+
+      <dl class="row">
+	<h1 class="display-5 col-md-8">Part 4: Error Quadric Simplification</h1>
+	<div class="col-md-4 pt-5">
+	  <ol class="text-left p-0">
+	    <p class="text-left p-0 m-0">Related Functions:</p>
+	    
+	    <li>void updatePQ()</li>
+	    <li>glm::mat4 errorMatrics(Vertex*, Vertex*)</li>
+	    <li>Errdge    optimalEdge(Vertex*, Vertex*)</li>
+	    <li>void removeEdges(GLuint)</li>
+	    <li>void collapse(Errdge)</li>
+	    <li>void updateVFSets()</li>
+
+	  </ol>
+	</div>
+
+      </dl>
       
+      <ol>
+	<li>
+	  <h4>Error Quadric Calculation: </h4>
+	  <p> To preserve the shape of the mesh when do simplication, we need to find an optimal vertex where an edge collapses to. In order to do so, we need to
+	    find a way to calculate the error caused by a collapse of edges and minimize the error during the process of simplification. In this assignment, we
+	    record the error based on a point-to-plane error quadric scheme. In a word, we first calculate the planes equation around the edge(vertex v1 and
+	    vertex v2). Then, we calculate the distance between the new merged vertex v0(where v1 and v2 converge to due to the edge collapsing) and all the
+	    planes around v1 and v2. The sum of the distance will be the error introduced to the mesh simplification. We then calculate the derivative of the
+	    error with respect to x, y and z in the space. Making the derivative 0, we can find the minimum error of a new point (x',y',z') where
+	    E(x',y',z') = 0. Then, the new point is the idea vertex we want the edge collapses to.
+	  </p>
+	</li>
+
+	<li>
+	  <h4>Algorithm Overview & Function Explianation:  </h4>
+	  <p> In our constructor of Mesh, before we dump everything to VBO. We call updatePQ() to calculate all the edges to be collapsed with the optimal point that they converge to using function optimalEdge.
+	    The optimalEdge function will take in two vertices and calculate the errorMatrics first using errorMatrics function. Then, we find the optimal
+	    position using the calculation process described above.
+	    The edge with error and optimal position is packed using Errdge class object and is pushed to priority queue.
+	    The priority queue will have all edges with the least error on the top of the queue.
+	  </p>
+	  
+	  <p>  Here, we are ready to do edge collasping. In our removeEdges function, we basically collapse all edges of the mesh until there is nothing left
+	    in the priority queue. And store each new vertex into a queue for later splitting(progressive meshing). When we remove one edge, we pop one edge
+	    out from priority queue. Check if it's valid(two vertices of the ending is not collapsed before). If valid, we call collapseEdge function on it.
+	    Else, keep popping until we find a valid edge to be collapsed on.	    
+	  </p>
+	  <p>Notation: F(V0) : set of faces of v0. (Adjacency list of V0) </p>
+	  <p>Notation: F1(V0): set of faces of v0. (Adjacency list of V0 where it contains the face where ancestor v1 used to have) </p>
+	  <p>Notation: F2(V0): set of faces of v0. (Adjacency list of V0 where it contains the face where ancestor v2 used to have) </p>
+	  <p> In our collapseEdge function, we extract information of two vertices to be merged and the optimal position to be merged.
+	    We first create a new vertex on the heap called v0.
+	    We set v0's ancestor v1 and v2 to current v1 and v2 pointer. (For part 5, more on this later.)
+	    We go over the faces of v1 and v2. Mark faces that contains v1 and v2 dead. And replace v1 in F(V1)'s vertices adjacency list with v0 and
+	    replace v2 in F(V2)'s vertices adjacency list with v0. At the same time, add faces from F(V1) and F(V2) to F(V0) and add F(V1) to F1(V0)
+	    and F(V2) to F2(V0).
+	    Then we do the fin removals.
+	    And recalculate the normals of faces near to v0.
+	    Recalculate the normals of vertices near to v0 and v0.
+	    Then, we calculate new optimal edges(edge with errors and optimal position after converge) and push them to the priority queue for later
+	    edge removals.
+	  </p>
+	  <p> After removing all edges of the mesh, we call updateVFSets() to store the valid faces and vertercies for later dumpping.</p>
+	  	 
+	</li>
+
+	<li>
+	  <h4>Some Notes: </h4>
+	  <p> In the following pictures, I present some mesh simplication of different degrees on Armadillo model. </p>
+	  <p> Later on, we will do a progessive meshing and simplication without calculations in part 5, where you can see the animation of
+	    the reconstruction from none to whole and the simplification from whole to none. </p>
+	</li>
+
+	<h5>Armadillo with Different LOD: </h5>
+
+	<div class="row pt-2">
+	  <div class="col-md-6 ">
+	    <img src="./images/a-1732-f-f.png" class="img-fluid" >
+	    <p class="text-left mx-auto"><small>1732 faces with flat shading(try it yourself)</small></p>
+	  </div>
+	</div>
+	
+	<div class="row pt-2 pb-5">
+	    
+	    <div class="col-md-6">
+	      <img src="./images/a-25528-b-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-25528-b-w.png" class="img-fluid">
+	    </div>
+
+	    <div class="col-md-6">
+	      <img src="./images/a-25528-f-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-25528-f-w.png" class="img-fluid">
+	    </div>
+	    <p class="text-center m-auto"><small>25528 faces</small></p>
+
+	    
+	  </div>
+
+	  <div class="row py-5">
+	    <div class="col-md-6">
+	      <img src="./images/a-10126-b-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-10126-b-w.png" class="img-fluid">
+	    </div>
+
+	    
+	    <div class="col-md-6">
+	      <img src="./images/a-10126-f-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-10126-f-w.png" class="img-fluid">
+	    </div>
+	    <p class="text-center m-auto"><small>10126 faces</small></p>
+
+	  </div>
+
+	  <div class="row py-5">
+	    <div class="col-md-6">
+	      <img src="./images/a-5004-b-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-5004-b-w.png" class="img-fluid">
+	    </div>
+
+	    
+	    <div class="col-md-6">
+	      <img src="./images/a-5004-f-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-5004-f-w.png" class="img-fluid">
+	    </div>
+	    <p class="text-center m-auto"><small>5004 faces</small></p>
+
+	  </div>
+
+
+	  <div class="row py-5">
+	    <div class="col-md-6">
+	      <img src="./images/a-1628-b-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-1628-b-w.png" class="img-fluid">
+	    </div>
+
+	    
+	    <div class="col-md-6">
+	      <img src="./images/a-1628-f-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-1628-f-w.png" class="img-fluid">
+	    </div>
+	    <p class="text-center m-auto"><small>1628 faces</small></p>
+
+	  </div>
+
+
+
+	<li>
+	  <h4>Interaction With the Model: </h4>
+	  <p>To interact with the model, we create a FPS like experimence to wonder around the scence using 'w', 'a', 's' and 'd' keys to move the position
+	    and the mouse to rotate the view angles. We first set up a Camera class to calculate the view matrix according to the camera object's position in the space and its focus on the scence. We let the Camera class process our input by passing in the glfw window pointer and adjust its position and
+	    view angles according to the inputs. Then, in the game loop, before drawing, we update our View matrix using Camra object. As well as, passing,
+	    camera position to shader for rendering the light.
+	    In order for you to get the mouse out of the program, you can press 'F6' to toggle the mouse from the scene.
+	  </p>
+	</li>
+      </ol>
+
     </div>
 
     
