@@ -101,6 +101,7 @@
 	    We let the Camera class process our keyboard and mouse input and adjust its position and
 	    view angle according to these inputs. Then, in the game loop, before drawing, we update our wiew matrix using the Camera class. Also, the camera position is given to the shader for rendering the lighting.
 	    In order for you to control the use of the mouse, you can press 'F6' to enable/disable the mouse.
+	    To do progessive meshing, press 'F3'. To do mesh simplification, press 'F3' to stop progressive meshing and press 'F4' to do edge collapsing.
 	  </p>
 	</li>
       </ol>
@@ -442,15 +443,7 @@
 
 
 
-	<li>
-	  <h4>Interaction With the Model: </h4>
-	  <p>To interact with the model, we create a FPS like experimence to wonder around the scence using 'w', 'a', 's' and 'd' keys to move the position
-	    and the mouse to rotate the view angles. We first set up a Camera class to calculate the view matrix according to the camera object's position in the space and its focus on the scence. We let the Camera class process our input by passing in the glfw window pointer and adjust its position and
-	    view angles according to the inputs. Then, in the game loop, before drawing, we update our View matrix using Camra object. As well as, passing,
-	    camera position to shader for rendering the light.
-	    In order for you to get the mouse out of the program, you can press 'F6' to toggle the mouse from the scene.
-	  </p>
-	</li>
+
       </ol>
 	  
 	  
