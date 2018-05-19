@@ -77,10 +77,10 @@
 	<li>
 	  <h4>Mesh Perception: </h4>
 	  <p> In order to test out the normal calculation and the mesh simplification, we need to have a way to "feel" the differences between a coarse mesh
-	    model and a fine mesh model. We conquer this goal by using a gouraud shading. Using gouraud shading, we can see the diffusive light and  the
-	    specular high light varies on different faces to give us some perception of meshes structure under lighting.
-	    And also, by such approach we are able to test out our normal calculations. What's more, for better seeing the meshes structure, we enable
-	    the wireframe model in the Opengl initialization. You can toggle it by pressing 'F5' key to switch bettween the modes.
+	    model and a fine mesh model. We conquer this obstacle by using Gouraud shading. This shading allows us to see the diffuse and
+	    specular highlights, which varies on different faces. It also gives the mesh structure depth and perception under basic lighting.
+	    This approach enables us to test out our normal calculations. What's more, to better see the mesh structure, we enable
+	    the wireframe modeling in the OpenGL initialization. You can toggle it by pressing 'F5' key to switch between the modes.
 	  </p>
 	  <div class="row pb-5">
 	    <div class="col-md-6">
@@ -96,11 +96,11 @@
 	
 	<li>
 	  <h4>Interaction With the Model: </h4>
-	  <p>To interact with the model, we create a FPS like experimence to wonder around the scence using 'w', 'a', 's' and 'd' keys to move the position
-	    and the mouse to rotate the view angles. We first set up a Camera class to calculate the view matrix according to the camera object's position in the space and its focus on the scence. We let the Camera class process our input by passing in the glfw window pointer and adjust its position and
-	    view angles according to the inputs. Then, in the game loop, before drawing, we update our View matrix using Camra object. As well as, passing,
-	    camera position to shader for rendering the light.
-	    In order for you to get the mouse out of the program, you can press 'F6' to toggle the mouse from the scene.
+	  <p>To interact with the model, we create a FPS like experience to wander around the scene by using the 'w', 'a', 's', and 'd' keys to move the camera's position
+	    and the mouse to rotate the view angle. We do this by first setting up a Camera class to calculate the view matrix according to the camera's position in space and its focus on the scence. 
+	    We let the Camera class process our keyboard and mouse input and adjust its position and
+	    view angle according to these inputs. Then, in the game loop, before drawing, we update our wiew matrix using the Camera class. Also, the camera position is given to the shader for rendering the lighting.
+	    In order for you to control the use of the mouse, you can press 'F6' to enable/disable the mouse.
 	  </p>
 	</li>
       </ol>
