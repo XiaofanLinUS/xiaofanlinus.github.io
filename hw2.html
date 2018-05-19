@@ -197,25 +197,26 @@
 	<li>
 	  <h4>Edge Collapsing Algorithm: </h4>
 	  <p>
-	    In our implementation, the edge collasping function take in a Errdge object. We first retrive two vertercies to be removed from the object and
-	    make a new vertex on heap by using the new positoin with least error from the object.
+	    In our implementation, the edge collase function takes in a Errdge object. We first retrieve the two vertices to be removed from the Errdge and
+	    instantiate a new vertex on the heap by using the new position with the least error, which is already calculated in the Errdge object.
 	  </p>
 	  <p>
-	    Let the two vertices to be removed be v1, v2 and the new vertex be v'.
+	    Let the two vertices to be removed be v1, v2 and the new vertex to be v'.
 	  </p>
 	  <p>
-	    For each face from v1's adjacent list, we check against all faces from v2's adjacent list. If the face doesn't include v2 vertex, we replace
-	    v1's place in adjacent list with v. We do the same thing for v2's adjacent list. If a face happens to include v1 and v2, we terminate the face.
-	    Then, add new Errdges(Edges with Error) calculated using error matrics onto priority queue. In the end, we terminate v1 and v2.
+	    For each face in both v1's and v2's adjacent list, we find the common faces and terminate them. Next, for the remaining faces that were not terminated, we replace v1 or v2 with v' from the face's adjacency list. 
+	    We then update the normals of these remaining faces to reflect the new vertex. 
+	    Following that, we iterate through each of the neighbors (vertices in the adjacency list of the faces that are in the adjacency list of the new vetex) and update their adjacency list (remove any terminated faces) and their normals.
+	    Lastly, we make new Errdges(Edges with Error) between the new vertex and its neighbors. This includes calculating the error matrics and adding these Errdges into the min heap structure. In the end, we also terminate v1 and v2 in order to not render them.
 	  </p>
 	</li>
 
 
 	<li>
-	  <h4>Corner Case(Triangle Shape's Triangle Fan): </h4>
+	  <h4>Corner Case (Fins): </h4>
 	    <p>
-	      The algorithm described above is not enough for some special cases, which can lead to a fin appear on the surface of the model making model
-	      look disasterous and also influence the error matrics calculation on some areas. See the following picture taken from the assignment write-up.
+	      The algorithm described above is not enough for some special cases, which can lead to a fins appearing on the surface of the model, making the model
+	      appear disasterous and also influencing the error matrics calculation in some areas. See the following picture taken from the assignment write-up.
 	    </p>
 
 	    <div class="row pb-5">
@@ -225,15 +226,14 @@
 	    </div>
 	    
 	    <h5>Our Solution: </h5>
-          <p>We can observe from the picture that the fin is caused by two faces sharing three vertices after the edge collasping.
-	    Thus, we can further
-	    remove the faces, that includes v', which share the same three vertices
+          <p>We observe from the pictures that the fin is caused by two faces sharing the same vertex set after the edge collapse.
+	    This gives us a simple algorithm to detect these fins and remove them accordingly.
 	  </p>
-	  <p>Implemnetation Detail: </p>
-	  <p>After, we merge our the edges incidents to v1 & v2 to v'. We need to check the neightbor face's adjacent lists of vertices.
-	    We use a nested-for loop to compare each face against one another. We use an unoder set to keep track of all the vertices that we have seen so far.
-	    If after we insert all the vertices into the set from two different active faces, teh size still remains 3, that means we have two faces sharing
-	    three vertices. Then, we mark two faces as dead by calling terminate() function. Then, we update the neight vertices and v'.
+		
+	  <p>Adding on to the edge collapse algorithm above, just after we replace v1 or v2 with v', we check for possible fins.
+	    We do this through the use of a nested-for loop that compares each face adjacent to v' with every other face adjacent to v'. 
+	    For each pair of faces, we add both faces' adjacent vertices into an unordered set. If, after inserting all the vertices from two different active faces into the set, the size of the set still remains as 3, it means that these two faces share the same vertex set (both are fins).
+	    Ins this case, we terminate both faces. After checking for fins, we continue with the algorithm above and update the faces and neighboring vertices.
 	  </p>
 
 	  <div class="row pt-5">
