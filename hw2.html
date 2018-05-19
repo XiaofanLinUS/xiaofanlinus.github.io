@@ -67,11 +67,11 @@
       
       <ol>
 	<li>
-	  <h4>Skeleton Code: </h4>
-	  <p> The base code of our program is taken from the provided skeleton code in the previous iterations of the CSE 167 class. 
-	    This code contains the basic initialization process to set up an OpenGL window. We build upon this code by adding a file parser, a Mesh class, and basic shaders. 
-	    As a result, the program is able to display the model, centered and scaled to a 10x10x10 cube, on a solid black background. 
-	  </p>
+		<h4>Skeleton Code: </h4>
+		<p> The base code of our program is taken from the provided skeleton code in the previous iterations of the CSE 167 class. 
+		This code contains the basic initialization process to set up an OpenGL window. We build upon this code by adding a file parser, a Mesh class, and basic shaders. 
+		As a result, the program is able to display the model, centered and scaled to a 10x10x10 cube, on a solid black background. 
+		</p>
 	</li>
 
 	<li>
@@ -96,12 +96,11 @@
 	
 	<li>
 	  <h4>Interaction With the Model: </h4>
-	  <p>To interact with the model, we create a FPS like experience to wander around the scene by using the 'w', 'a', 's', and 'd' keys to move the camera's position
+	  <p>To interact with the model, we create a FPS-like experience to wander around the scene by using the 'w', 'a', 's', and 'd' keys to move the camera's position
 	    and the mouse to rotate the view angle. We do this by first setting up a Camera class to calculate the view matrix according to the camera's position in space and its focus on the scence. 
 	    We let the Camera class process our keyboard and mouse input and adjust its position and
 	    view angle according to these inputs. Then, in the game loop, before drawing, we update our wiew matrix using the Camera class. Also, the camera position is given to the shader for rendering the lighting.
 	    In order for you to control the use of the mouse, you can press 'F6' to enable/disable the mouse.
-	    To do progessive meshing, press 'F3'. To do mesh simplification, press 'F3' to stop progressive meshing and press 'F4' to do edge collapsing.
 	  </p>
 	</li>
       </ol>
@@ -121,7 +120,7 @@
 	    three important concerns. Making the code simple allows it to be maintainable and fast enough to perform the mesh simplification and
 	    progressive meshes. The follwing picture is the simplified UML diagram of our data structure relationship.
 	  </p>
-	  
+		
 	  <p>
 	    For the reasons stated above, we decided to use the simple adjacency list data structure. We have three main classes: Vertex, Face, and Mesh. 
 	    Each of these classes represent what their names suggest (i.e. Vertex represents a vertex). The Mesh class is the container class which holds a list of vertices and faces that make up the mesh, 
@@ -140,7 +139,7 @@
 	  <p class="text-left my-2"><small>UML of data structure</small></p>
 
 	</li>
-	
+	      
 	<li>
 	  <h4>Data Import: </h4>
 	  <p> To read in the model's data from the OFF files, we mainly use a stringstream class. We first create a Mesh object, which contains an array of Vertex pointers and another array of Face pointers.
@@ -149,41 +148,40 @@
 	    This array is then passed to the VBO and EBO for OpenGL to render the model.
 	  </p>
 	</li>
+	      
 	
-	
-	<h4>Run-time Analysis: </h4>
-	<ol>
-	  <li >
-	    <p class="m-0">Picking an Edge: </p>
-	    <p>
-	      To store the Errdge objects, we use a min heap. Initializing this heap with all the possible edges takes a single O(N log N) time. Picking an edge in each iteration of an edge collapse takes O(log N) time. And finally, adding the new edges (after collapsing edges) will also take O(log N) time.
-	    </p>
-	  </li>
-	  <li>
-	    <p class="m-0">Updating Adjacency List: </p>
-	    <p>
-	      Because we deal with pointers and only update locally, with respect to the edge, updating the adjacency list should run in constant time. 
-	      To update the adjcency list of the faces and vertices that were affected by the edge collapse, we only have to replace the pointer information, which is just a value assignment. The total number of faces and vertices that have to be updated is also constant since they are simply the neighbors of the vertices that were collapsed. 
-	      As for the faces that collapse as a result of the edge collapse, we toggle a flag in the object that indicates the face being invalid and not part of the simplified model. These show that updating the adjacency list takes constant time.
-	    </p>
-	  </li>
-	  <li>
-	    <p class="m-0">Total: </p>
-	    <p>
-	      From the analyses above, performing an edge collapse will take O(log N) time with respect to the number of edges. However, we note that for smaller values, recalculating the error and optimal vertex position might dominate the run time since it uses matrix operations. 
-	      As for vertex splits, the runtime should be constant since we maintain a history stack that shows which vertices split into which other vertices. This means that there is no calculation required for vertex splits.
-	    </p>
-	  </li>   
-	</ol>
-
+	  <h4>Run-time Analysis: </h4>
+	  <ol>
+	    <li >
+	      <p class="m-0">Picking an Edge: </p>
+	      <p>
+		To store the Errdge objects, we use a priority queue. Initializing this priority queue with all the possible edges takes a single O(N log N) time. Picking an edge in each iteration of an edge collapse takes O(log N) time. And finally, adding the new edges (after collapsing edges) will also take O(log N) time.
+	      </p>
+	    </li>
+	    <li>
+	      <p class="m-0">Updating Adjacency List: </p>
+	      <p>
+		Because we deal with pointers and only update locally, with respect to the edge, updating the adjacency list should run in constant time. 
+		To update the adjcency list of the faces and vertices that were affected by the edge collapse, we only have to replace the pointer information, which is just a value assignment. The total number of faces and vertices that have to be updated is also constant since they are simply the neighbors of the vertices that were collapsed. 
+		As for the faces that collapse as a result of the edge collapse, we toggle a flag in the object that indicates the face being invalid and not part of the simplified model. These show that updating the adjacency list takes constant time.
+	      </p>
+	    </li>
+	    <li>
+	      <p class="m-0">Total: </p>
+	      <p>
+		 From the analyses above, performing an edge collapse will take O(log N) time with respect to the number of edges. However, we note that for smaller values, recalculating the error and optimal vertex position might dominate the run time since it uses matrix operations. 
+		 As for vertex splits, the runtime should be constant since we maintain a history stack that shows which vertices split into which other vertices. This means that there is no calculation required for vertex splits.
+	      </p>
+	    </li>   
+	  </ol>
+	</li>
 
 	<li>
 	  <h4>Memory Management: </h4>
 	  <p>In the edge collapse function, instead of deleting, we mark each vertex and face that are not going to be rendered as "dead". These "dead" vertices and faces are then skipped when transferring the vertices and faces into arrays for the VBO and EBO.
-	    The reason we did this is because of two things, simplifying the vertex split function and consolidating the dynamic memory. By keeping the "dead' vertices and faces, we avoid having to recreate these objects and instead, simply toggle a flag. 
-	    Also, by keeping these dynamically allocated objects in a single container, we avoid having to release memory in many different places in the code. Instead, freeing the memory can be done in the end, with a simple for loop.
-	  </p>
-	</li>
+	     The reason we did this is because of two things, simplifying the vertex split function and consolidating the dynamic memory. By keeping the "dead' vertices and faces, we avoid having to recreate these objects and instead, simply toggle a flag. 
+	     Also, by keeping these dynamically allocated objects in a single container, we avoid having to release memory in many different places in the code. Instead, freeing the memory can be done in the end, with a simple for loop.
+	  </p>	  
       </ol>
 
 
@@ -209,29 +207,29 @@
 	    For each face in both v1's and v2's adjacent list, we find the common faces and terminate them. Next, for the remaining faces that were not terminated, we replace v1 or v2 with v' from the face's adjacency list. 
 	    We then update the normals of these remaining faces to reflect the new vertex. 
 	    Following that, we iterate through each of the neighbors (vertices in the adjacency list of the faces that are in the adjacency list of the new vetex) and update their adjacency list (remove any terminated faces) and their normals.
-	    Lastly, we make new Errdges(Edges with Error) between the new vertex and its neighbors. This includes calculating the error matrics and adding these Errdges into the min heap structure. In the end, we also terminate v1 and v2 in order to not render them.
+	    Lastly, we make new Errdges(Edges with Error) between the new vertex and its neighbors. This includes calculating the error matrics and adding these Errdges into the priority queue structure. In the end, we also terminate v1 and v2 in order to not render them.
 	  </p>
 	</li>
 
 
 	<li>
 	  <h4>Corner Case (Fins): </h4>
-	  <p>
-	    The algorithm described above is not enough for some special cases, which can lead to a fins appearing on the surface of the model, making the model
-	    appear disasterous and also influencing the error matrics calculation in some areas. See the following picture taken from the assignment write-up.
-	  </p>
+	    <p>
+	      The algorithm described above is not enough for some special cases, which can lead to a fins appearing on the surface of the model, making the model
+	      appear disasterous and also influencing the error matrics calculation in some areas. See the following picture taken from the assignment write-up.
+	    </p>
 
-	  <div class="row pb-5">
-	    <div class="col-md-12">
-	      <img src="./images/special-case.png" class="img-fluid" alt="special case for edge collapsing">
+	    <div class="row pb-5">
+	      <div class="col-md-12">
+		<img src="./images/special-case.png" class="img-fluid" alt="special case for edge collapsing">
+	      </div>
 	    </div>
-	  </div>
-	  
-	  <h5>Our Solution: </h5>
-	  <p>We observe from the pictures that the fin is caused by two faces sharing the same vertex set after the edge collapse.
+	    
+	    <h5>Our Solution: </h5>
+          <p>We observe from the pictures that the fin is caused by two faces sharing the same vertex set after the edge collapse.
 	    This gives us a simple algorithm to detect these fins and remove them accordingly.
 	  </p>
-	  
+		
 	  <p>Adding on to the edge collapse algorithm above, just after we replace v1 or v2 with v', we check for possible fins.
 	    We do this through the use of a nested-for loop that compares each face adjacent to v' with every other face adjacent to v'. 
 	    For each pair of faces, we add both faces' adjacent vertices into an unordered set. If, after inserting all the vertices from two different active faces into the set, the size of the set still remains as 3, it means that these two faces share the same vertex set (both are fins).
@@ -301,57 +299,53 @@
 	</div>
 
       </dl>
-
+      
       <ol>
 	<li>
 	  <h4>Error Quadric Calculation: </h4>
-	  <p> To preserve the shape of the mesh when do simplication, we need to find an optimal vertex where an edge collapses to. In order to do so, we need to
-	    find a way to calculate the error caused by a collapse of edges and minimize the error during the process of simplification. In this assignment, we
-	    record the error based on a point-to-plane error quadric scheme. In a word, we first calculate the planes equation around the edge(vertex v1 and
-	    vertex v2). Then, we calculate the distance between the new merged vertex v0(where v1 and v2 converge to due to the edge collapsing) and all the
+	  <p> To preserve the shape of the mesh when simplifying, we need to find an optimal vertex where an edge collapses to. In order to do so, we need to
+	    find a way to calculate the error caused by an edge collapse and minimize the error during the process of simplification. In this assignment, we
+	    record the error based on a point-to-plane error quadric scheme. In other words, we first calculate the plane's equation around the edge(vertex v1 and
+	    vertex v2). Then, we calculate the distance between the new merged vertex v' (where v1 and v2 converge to due to the edge collapse) and all the
 	    planes around v1 and v2. The sum of the distance will be the error introduced to the mesh simplification. We then calculate the derivative of the
-	    error with respect to x, y and z in the space. Making the derivative 0, we can find the minimum error of a new point (x',y',z') where
-	    E(x',y',z') = 0. Then, the new point is the idea vertex we want the edge collapses to.
+	    error with respect to x, y, and z in space. Equating the derivative to 0 allows us to find the minimum error of a new point (x',y',z') where
+	    E(x',y',z') = 0. This new point is the ideal vertex we want the edge collapses to in order to minimize the error and preserve the shape of the model.
 	  </p>
 	</li>
 
 	<li>
-	  <h4>Algorithm Overview & Function Explianation:  </h4>
-	  <p> In our constructor of Mesh, before we dump everything to VBO. We call updatePQ() to calculate all the edges to be collapsed with the optimal point that they converge to using function optimalEdge.
-	    The optimalEdge function will take in two vertices and calculate the errorMatrics first using errorMatrics function. Then, we find the optimal
+	  <h4>Algorithm Overview & Function Explanation:  </h4>
+	  <p> In the constructor of our Mesh class, after we parse the OFF file and calculate the normals for each face and vertex, we call the updatePQ function to calculate the optimal vertex and error metrics for all the edges using the function optimalEdge.
+	    The optimalEdge function takes in two vertices and calculates the errorMetrics first using the errorMetrics function. Then, we find the optimal
 	    position using the calculation process described above.
-	    The edge with error and optimal position is packed using Errdge class object and is pushed to priority queue.
-	    The priority queue will have all edges with the least error on the top of the queue.
+	    The edge, along with the error metrics and optimal position, is packed using an Errdge object and is pushed into a priority queue.
+	    This priority queue will have all the edges in the model, with the edge holding the least error on the front of the queue. 
 	  </p>
 	  
-	  <p>  Here, we are ready to do edge collasping. In our removeEdges function, we basically collapse all edges of the mesh until there is nothing left
-	    in the priority queue. And store each new vertex into a queue for later splitting(progressive meshing). When we remove one edge, we pop one edge
-	    out from priority queue. Check if it's valid(two vertices of the ending is not collapsed before). If valid, we call collapseEdge function on it.
-	    Else, keep popping until we find a valid edge to be collapsed on.	    
+	  <p>  After initializing the priority queue, we are ready to do some edge collapsing. In our removeEdges function, we basically collapse all edges of the mesh until there is nothing left
+	    in the priority queue.  When we remove one edge, we pop one edge out from priority queue. We check to see if it's valid (the two vertices composing the edge have not been collapsed before). If the Errdge is valid, we call the collapseEdge function on it.
+	    Else, we keep popping until we find a valid edge to collapse.	    
 	  </p>
-	  <p>Notation: F(V0) : set of faces of v0. (Adjacency list of V0) </p>
-	  <p>Notation: F1(V0): set of faces of v0. (Adjacency list of V0 where it contains the face where ancestor v1 used to have) </p>
-	  <p>Notation: F2(V0): set of faces of v0. (Adjacency list of V0 where it contains the face where ancestor v2 used to have) </p>
-	  <p> In our collapseEdge function, we extract information of two vertices to be merged and the optimal position to be merged.
-	    We first create a new vertex on the heap called v0.
-	    We set v0's ancestor v1 and v2 to current v1 and v2 pointer. (For part 5, more on this later.)
-	    We go over the faces of v1 and v2. Mark faces that contains v1 and v2 dead. And replace v1 in F(V1)'s vertices adjacency list with v0 and
-	    replace v2 in F(V2)'s vertices adjacency list with v0. At the same time, add faces from F(V1) and F(V2) to F(V0) and add F(V1) to F1(V0)
-	    and F(V2) to F2(V0).
-	    Then we do the fin removals.
-	    And recalculate the normals of faces near to v0.
-	    Recalculate the normals of vertices near to v0 and v0.
-	    Then, we calculate new optimal edges(edge with errors and optimal position after converge) and push them to the priority queue for later
+	  <p>Notation: F(v') : set of faces of v'. (Adjacency list of v') </p>
+	  <p>Notation: F1(v'): set of faces of v'. (Adjacency list of v' which contains the faces ancestor v1 used to have) </p>
+	  <p>Notation: F2(v'): set of faces of v'. (Adjacency list of v' which contains the faces ancestor v2 used to have) </p>
+	  <p> In our collapseEdge function, we extract the information from Errdge about which two vertices to merge and where the optimal position is.
+	    We first create a new vertex on the heap v' that is at the optimal position.
+	    We then set v''s ancestors v1 and v2 to the current v1 and v2 pointer. (For part 5, more on this later.)
+	    Next, we go over the faces of v1 and v2. We terminate faces that contains both v1 and v2, and we replace v1 in F(v1)'s vertex adjacency list with v' and
+	    replace v2 in F(v2)'s vertex adjacency list with v'. At the same time, we assign F(v') = F(v1) + F(v2), F1(v') = F(v1), and F2(v') = F(v2).
+	    Then we remove the fins and recalculate the normals of both the neighboring faces and vertices of v'.
+	    Lastly, we create Errdge for all the new edges (calculate the errors and find optimal position) and push them into the priority queue for subsequent
 	    edge removals.
 	  </p>
-	  <p> After removing all edges of the mesh, we call updateVFSets() to store the valid faces and vertercies for later dumpping.</p>
-	  
+	  <p> After removing all the edges of the mesh, we call the updateVFSets function to store the valid faces and vertices for later dumping.</p>
+	  	 
 	</li>
 
 	<li>
 	  <h4>Some Notes: </h4>
-	  <p> In the following pictures, I present some mesh simplication of different degrees on Armadillo model. </p>
-	  <p> Later on, we will do a progessive meshing and simplication without calculations in part 5, where you can see the animation of
+	  <p> In the following pictures, we present some mesh simplication of different degrees on the Armadillo model. </p>
+	  <p> In the next section, we implement a progessive meshing and simplication without calculations in part 5, where there will be an animation of
 	    the reconstruction from none to whole and the simplification from whole to none. </p>
 	</li>
 
@@ -365,121 +359,117 @@
 	</div>
 	
 	<div class="row pt-2 pb-5">
-	  
-	  <div class="col-md-6">
-	    <img src="./images/a-25528-b-g.png" class="img-fluid" >
-	  </div>
-	  <div class="col-md-6">
-	    <img src="./images/a-25528-b-w.png" class="img-fluid">
-	  </div>
+	    
+	    <div class="col-md-6">
+	      <img src="./images/a-25528-b-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-25528-b-w.png" class="img-fluid">
+	    </div>
 
-	  <div class="col-md-6">
-	    <img src="./images/a-25528-f-g.png" class="img-fluid" >
-	  </div>
-	  <div class="col-md-6">
-	    <img src="./images/a-25528-f-w.png" class="img-fluid">
-	  </div>
-	  <p class="text-center m-auto"><small>25528 faces</small></p>
+	    <div class="col-md-6">
+	      <img src="./images/a-25528-f-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-25528-f-w.png" class="img-fluid">
+	    </div>
+	    <p class="text-center m-auto"><small>25528 faces</small></p>
 
-	  
-	</div>
-
-	<div class="row py-5">
-	  <div class="col-md-6">
-	    <img src="./images/a-10126-b-g.png" class="img-fluid" >
-	  </div>
-	  <div class="col-md-6">
-	    <img src="./images/a-10126-b-w.png" class="img-fluid">
+	    
 	  </div>
 
-	  
-	  <div class="col-md-6">
-	    <img src="./images/a-10126-f-g.png" class="img-fluid" >
-	  </div>
-	  <div class="col-md-6">
-	    <img src="./images/a-10126-f-w.png" class="img-fluid">
-	  </div>
-	  <p class="text-center m-auto"><small>10126 faces</small></p>
+	  <div class="row py-5">
+	    <div class="col-md-6">
+	      <img src="./images/a-10126-b-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-10126-b-w.png" class="img-fluid">
+	    </div>
 
-	</div>
+	    
+	    <div class="col-md-6">
+	      <img src="./images/a-10126-f-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-10126-f-w.png" class="img-fluid">
+	    </div>
+	    <p class="text-center m-auto"><small>10126 faces</small></p>
 
-	<div class="row py-5">
-	  <div class="col-md-6">
-	    <img src="./images/a-5004-b-g.png" class="img-fluid" >
-	  </div>
-	  <div class="col-md-6">
-	    <img src="./images/a-5004-b-w.png" class="img-fluid">
-	  </div>
-
-	  
-	  <div class="col-md-6">
-	    <img src="./images/a-5004-f-g.png" class="img-fluid" >
-	  </div>
-	  <div class="col-md-6">
-	    <img src="./images/a-5004-f-w.png" class="img-fluid">
-	  </div>
-	  <p class="text-center m-auto"><small>5004 faces</small></p>
-
-	</div>
-
-
-	<div class="row py-5">
-	  <div class="col-md-6">
-	    <img src="./images/a-1628-b-g.png" class="img-fluid" >
-	  </div>
-	  <div class="col-md-6">
-	    <img src="./images/a-1628-b-w.png" class="img-fluid">
 	  </div>
 
-	  
-	  <div class="col-md-6">
-	    <img src="./images/a-1628-f-g.png" class="img-fluid" >
+	  <div class="row py-5">
+	    <div class="col-md-6">
+	      <img src="./images/a-5004-b-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-5004-b-w.png" class="img-fluid">
+	    </div>
+
+	    
+	    <div class="col-md-6">
+	      <img src="./images/a-5004-f-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-5004-f-w.png" class="img-fluid">
+	    </div>
+	    <p class="text-center m-auto"><small>5004 faces</small></p>
+
 	  </div>
-	  <div class="col-md-6">
-	    <img src="./images/a-1628-f-w.png" class="img-fluid">
+
+
+	  <div class="row py-5">
+	    <div class="col-md-6">
+	      <img src="./images/a-1628-b-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-1628-b-w.png" class="img-fluid">
+	    </div>
+
+	    
+	    <div class="col-md-6">
+	      <img src="./images/a-1628-f-g.png" class="img-fluid" >
+	    </div>
+	    <div class="col-md-6">
+	      <img src="./images/a-1628-f-w.png" class="img-fluid">
+	    </div>
+	    <p class="text-center m-auto"><small>1628 faces</small></p>
+
 	  </div>
-	  <p class="text-center m-auto"><small>1628 faces</small></p>
-
-	</div>
-
-
-
-
       </ol>
-
-
-
-      <dl class="row">
+	  
+	  
+	  
+	  <dl class="row">
 	<h1 class="display-5 col-md-8">Part 5: Progressive Meshes </h1>
 	<div class="col-md-4 pt-5">
 	  <p class="text-left">Related Class: Vertex</p>
 	</div>
 
       </dl>
-
+      
       <ol>
 	<li>
-	  <h4>Vertex Split Algorithm: </h4>
-	  <p> To simplify the vertex split function, we add some extra fields in the Vertex class. This includes two pointers to the vertices it is merged from and a pointer to the vertex it merges to. 
-	    In addition to that, five new adjacency lists are added: one for the faces common to both v1 and v2, one for the faces adjacent to only v1, another for the faces adjacent to only v2, one for the faces adjacent to v1 that became fins, 
-	    and another for the faces adjacent to v2 that became fins. Aside from these, we also add a stack in the Mesh class that represents the history of edge collapses. It stores the v' in each iteration of the edge collapse function.
-	  </p>
-	  
-	  <p> Doing these greatly simplifies the vertex split process, such that it becomes a question of updating the adjacency list. 
-	    To split a vertex v', we iterate through each of the adjacency lists and reverse the update process done in the edge collapse function. For the faces that are adjacent to only either v1 or v2, 
-	    we replace v' with the respective vertex in the face's adjacency list. For the faces common to both v1 and v2, we simply have them reborn (opposite of terminate) and add the face back to all of its vertices' adjacency list. 
-	    As for the fins, we do all three: have the face be reborn, replace v' with the respective vertex, and add the face back to all its vertices' adjacency list. Next, we recalculate both the faces' and the neighboring vertices' normals. 
-	    Lastly, we terminate the merged vertex v' and revive the previous vertices v1 and v2.
-	  </p>
-	  
-	  <div class="row pb-5">
-	    <div class="col-md-6">
-	      <iframe width="480" height="270" src="https://www.youtube.com/embed/sEhS0Al0-CU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-	    </div>
-	    <div class="col-md-6">
-	      <iframe allowfullscreen="" frameborder="0" height="270" src="https://www.youtube.com/embed/b3nqMcoIoZM" width="480"></iframe>
-	    </div>
-	  </div>
+		<h4>Vertex Split Algorithm: </h4>
+		<p> To simplify the vertex split function, we add some extra fields in the Vertex class. This includes two pointers to the vertices it is merged from (ancestors v1 and v2) and a pointer to the vertex it merges to. 
+		In addition to that, five new adjacency lists are added: one for the faces common to both v1 and v2, one for the faces adjacent to only v1, another for the faces adjacent to only v2, one for the faces adjacent to v1 that became fins, 
+		and another for the faces adjacent to v2 that became fins. Aside from these, we also add a stack in the Mesh class that represents the history of edge collapses. It stores the v' in each iteration of the edge collapse function.
+		</p>
+		
+		<p> Doing these greatly simplifies the vertex split process, such that it becomes a question of updating the adjacency list. 
+		To split a vertex v', we iterate through each of the adjacency lists and reverse the update process done in the edge collapse function. For the faces that are adjacent to only either v1 or v2, 
+		we replace v' with the respective vertex in the face's adjacency list. For the faces common to both v1 and v2, we simply have them reborn (opposite of terminate) and add the face back to all of its vertices' adjacency list. 
+		As for the fins, we do all three: have the face be reborn, replace v' with the respective vertex, and add the face back to all its vertices' adjacency list. Next, we recalculate both the faces' and the neighboring vertices' normals. 
+		Lastly, we terminate the merged vertex v' and revive the previous vertices v1 and v2.
+		</p>
+		
+		<div class="row pb-5">
+	    		<div class="col-md-6">
+	      		<iframe width="480" height="270" src="https://www.youtube.com/embed/sEhS0Al0-CU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+	    		</div>
+	    		<div class="col-md-6">
+	      		<iframe allowfullscreen="" frameborder="0" height="270" src="https://www.youtube.com/embed/b3nqMcoIoZM" width="480"></iframe>
+	    		</div>
+	  	</div>
 	</li>
 
 	
@@ -487,7 +477,7 @@
 
     </div>
 
-
+    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
