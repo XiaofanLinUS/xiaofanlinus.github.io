@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>CSE163 Archive</title>
+  </head>
+  <body>
+    
+    
+    
+
+    <div class="container-fluid px-0 m-0 navbar navbar-dark navbar-expand-lg nav-color" id="mainNav">
+      <!-- Content here -->
+      <nav class="container m-0">
+	<!-- Navbar content -->
+	
+	<a class="navbar-brand mr-5 font-weight-bold text-warning" href="#">CSE163</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	  <span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	  <ul class="navbar-nav mr-auto">
+	    <li class="nav-item active">
+	      <a class="nav-link" href="./index.html#">Home <span class="sr-only">(current)</span></a>
+	    </li>
+	    <li class="nav-item dropdown">
+	      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		Assignments
+	      </a>
+
+	    </li>
+	  </ul>
+	</div>
+	
+      </nav>
+      <!-- end of container -->
+    </div>
+
+    <div class="jumbotron">
+
+      <div class="container">
+	
+	<h1 class="display-4">Light Field Viewer</h1>
+	<hr class="my-4">
+      </div>
+
+    </div>
+    
+
+    <div class="essay container">
+      
+      <dl class="row">
+	<h1 class="display-5 col-md-8">INTRODUCTION</h1>
+      </dl>
+      
+
+
+      
+      <p>One of the exciting up-and-coming fields of research in computer graphics is image-based rendering. This type of rendering differs from the traditional methods in that it uses images of the scene rather than the 3D model of the scene.</p>
+      <p>In its basic form, it simply interpolates between the images to create a continuous view of the scene. This is done by defining two planes – the UV plane and the ST plane. The UV plane represents the camera (each point corresponding to the camera’s position), while the ST planes represents the image of the scene (each point corresponding to a pixel in the image). Next, each point in the UV plane maps to an array of points in the ST plane. What this means is that each camera position in the UV plane maps to an image (2D array of pixels) in the ST plane. A viewer then places a camera in space, not necessarily on the UV plane, and uses ray tracing to find which pixel out of all the possible images and camera positions to render to the screen. </p>
+
+
+      <hr class="my-4 my-4">
+      <dl class="row mt-5">
+	<h1 class="display-5 col-md-8">PROPOSAL</h1>
+      </dl>
+      <p>The goal of our project is to create a basic light field viewer that uses the image-based rendering technique. Our baseline implementation would allow the user to translate the camera in the xyz-axes. It would also have the three different interpolation methods: nearest neighbor, bilinear, and quadrilinear. If time allows, we would add the following functionalities:</p>
+      <ol>
+	<li>
+	  <p>Allow the user to change the viewing angle of the camera </p>
+	</li>
+	      
+	<li>	
+	  <p>Have an aperture and focal plane </p>
+	</li>
+
+	<li>
+	  <p>Compress and decompress the input images to improve performance</p>
+	</li>
+      </ol>
+
+
+
+      <dl class="row mt-5">
+	<h1 class="display-5 col-md-8">PROGRESS REPORT</h1>
+      </dl>
+
+      <p>To start our project, we have created a synthetic dataset using the PBRT program created by Pharr, Jakob, and Humphreys. Here is the link to their github repository. <INCLUDE LINK> We created a script to run the program to render 17x17 images with resolutions of 512x512 pixels. Each image corresponds to the scene being captured by a camera positioned at (x, y) where the range of both x and y are [-40, 40], with a gap of 5 in between each camera.
+      </p>
+
+      <div class="row pb-5 align-items-center">
+	      <div class="col-md-5 mx-auto">
+		<img src="./images/hw3/glassBall.png" class="img-thumbnail">
+		<p class="text-center mx-auto"><small>Scene rendered with camera positioned at (0, 0)</small></p>
+	      </div>
+      </div>
+
+      <p>As a next step, we have started on the light field viewer. We have implemented the program to take in a directory containing the images, and it loads them into the ImagePlane class. This ImagePlane class parses each image’s name, which contains the x and y positions of the camera, and places them in an array of images. It then uses the current camera’s position and the nearest neighbor algorithm to decide which pixels are rendered onto the screen.
+      </p>
+
+      <div class="row pb-5 align-items-center">
+	<div class="col-md-5 mx-auto">
+	  <img src="./images/hw3/lightfield.png" class="img-thumbnail">
+	  <p class="text-center mx-auto"><small>Downsized (9x9 instead of 17x17) visualization of the UV plane</small></p>
+	</div>
+      </div>
+
+      <p>However, as of the writing of this report, our viewer still has bugs regarding the mapping of the pixels in the input images to the pixels rendered on the screen. Below are sample screenshots of this issue.
+      </p>
+      <div class="row pb-5 align-items-center">
+	<div class="col-md-5 mx-auto">
+	  <img src="./images/hw3/bug.png" class="img-thumbnail">
+	  <p class="text-center mx-auto"><small>Buggy Program</small></p>
+	</div>
+      </div>
+    </div>
+
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
