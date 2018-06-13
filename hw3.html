@@ -190,10 +190,10 @@
       </dl>  
 	    
 	    <h4> Camera Plane </h4>
-	    <p> TODO </p>
+	    <p> Camera is also referred as UV plane. It contains all camera with a uniform interval between two of them. Each camera on it will have its own perspective of the object on the same focal plane.  </p>
 	    
 	    <h4> Focal Plane </h4>
-	    <p> TODO </p>
+	    <p> Focal plane is also refered as ST plane. It's a 2D array of images taken using different camera stacked up on the same focal plane. It is used to retrieve color to render new image at a virtual position where no previous or prior information was offered. </p>
 	    
 	    <h4> Interpolation Method </h4>
 	    <ol>
@@ -296,7 +296,7 @@
 	<h1 class="display-5 col-md-8">Add on</h1>
       </dl>  
 	    
-      <h3> Aperture Plane </h3>
+      <h3> Aperture Effect </h3>
       <p>Since we are using ray tracing, it's very trivial to apply aperture and focus effects on our 'new' images rendered by our virtual camera. But like the ray tracing rendering,
 	it is very time consuming to render new images. The following figure on the left is the real-time aperture adjustment while on the right is the one sped up using software.
       </p>
