@@ -190,21 +190,17 @@
       </dl>  
 	    
 	    <h4> Camera Plane </h4>
-      <p> Camera is also refered as UV plane. It's contain all camera with a uniform interval between two of them. Each camera on it will have its own perspective of
-	the object on the same focal plane.
-      </p>
+	    <p> TODO </p>
 	    
 	    <h4> Focal Plane </h4>
-      <p> Focal plane is also refered as ST plane. It's a 2D array of images taken using different camera stack up on the same focal plane. It is used to retrieve color to
-	render new image at a virtual position where no previous or prior information was offered.
-      </p>
+	    <p> TODO </p>
 	    
 	    <h4> Interpolation Method </h4>
 	    <ol>
 	      <li>
 		<h3> Nearest Neighbor </h3>
-		<p> It's very easy to implement nearest neighbor sampling in the lightfield viewer using ray tracing. From a camera position, we shoot out very single ray to each pixel on the view port. Then, tracing the ray, we find the intersected points on UV plane(Camera Plane) and ST plane(Focal Plane). Then, from the real
-		  value instersecting points, we find the nearest grid point on the two planes to retrieve the corrosponding pixel color from them and color it on the viewport to
+		<p> It's very easy to implement nearest neighbor sampling in the lightfield viewer using ray tracing. From a camera position, we shoot out a single ray to each pixel on the view port. Then, tracing the ray, we find the intersected points on UV plane(Camera Plane) and ST plane(Focal Plane). Then, from the real
+		  valued instersecting points, we find the nearest grid point on the two planes to retrieve the corresponding pixel color from them and color it on the viewport to
 		  render our "new" images.</p>
 		<div class="row pt-5">
 	    	  <div class="col-md-6">
@@ -221,7 +217,7 @@
 		    </li>
 		    
 		    <li> <h3> Bilinear (ST) </h3>
-		      <p>To further remove the alising on the image, we use a bilinear interpolation on the image plane(ST). As a result, when we zoom in, we will find out
+		      <p>To remove some of the aliasing on the image, we use a bilinear interpolation on the image plane(ST). As a result, when we zoom in, we will find out
 		      the aliasing effect caused by scaling up would be smoothed out a little.</p>
 		    </li>
 		    <div class="row pt-5">
@@ -232,8 +228,8 @@
 		    </div>
 		    
 		    <li> <h3> Bilinear (UV) </h3>
-		      <p>Similarly, in order to remove the aliasing caused by movement of the virtual camera around the sence, we apply bilinear interpolation on UV plane
-			to average out one point's pixel from two different camera. As a result, we can see a bluring effect when a ray lands between two different camera position
+		      <p>Similarly, in order to remove the aliasing caused by movement of the virtual camera around the scene, we apply bilinear interpolation on UV plane
+			to average out one point's pixel from four different cameras. As a result, we can see a bluring effect when a ray lands between two different camera position
 			instead of dramatic zigzag aliasing.</p>
 		      <div class="row pt-5">
 	    		<div class="col-md-6">
@@ -300,9 +296,9 @@
 	<h1 class="display-5 col-md-8">Add on</h1>
       </dl>  
 	    
-      <h3> Aperture Effect </h3>
-      <p>Since we are using raytracing, it's very trivial to apply aperture and focus effects on our 'new' images rendered by our virtual camera. But like the raytrcing rendering,
-	it is very time consuming to render new images. The following figure on the left is the real-time aperture adjustment while on the right is the one speeded up using software.
+      <h3> Aperture Plane </h3>
+      <p>Since we are using ray tracing, it's very trivial to apply aperture and focus effects on our 'new' images rendered by our virtual camera. But like the ray tracing rendering,
+	it is very time consuming to render new images. The following figure on the left is the real-time aperture adjustment while on the right is the one sped up using software.
       </p>
       <div class="row">
 	<div class="col-md-6">
