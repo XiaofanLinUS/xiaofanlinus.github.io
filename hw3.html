@@ -145,10 +145,18 @@
 	<h1 class="display-5 col-md-8">Light Field Viewer</h1>
       </dl>  
 	    <h4> Display </h4>
-	    <p> TODO </p>
+	    <p> The light field viewer is a simple OpenGL window that displays pixels on the screen. The window resolution is 512x512, 
+		although it is not necessary for the input images to be the same dimensions. The way we render the view onto the screen 
+		is by having a buffer array that holds the pixel colors. We have the VirtualCamera object fill the buffer with the view 
+		depending on the camera's position and call the glDrawPixels function to render the buffer onto the screen. </p>
 	    
-	    <h4> Camera Interaction </h4>
-	    <p> TODO </p>
+	    <h4> Keyboard Interaction </h4>
+	    <p> The viewer supports basic camera interaction such as translation and rotation with the 'WASD' keys and the 'F' and 'B' 
+		keys for forward and backward movement, respectively. The keyboard interaction also allows the user to change 
+		interpolation techniques dynamically. '1' switches the interpolation method to the nearest neighbor technique; '2' for 
+		bilinear interpolation in the focal or ST plane; '3' for bilinear interpolation in the camera or UV plane; and '4' for 
+		quadrilinear interpolation on both the focal and camera plane. Lastly, 'Q' toggles the aperture on or off. To control 
+		the aperture, '-' is used to decrease the aperture while '=' is used to increase the aperture. </p>
 	    
      <dl class="row mt-5">
 	<h1 class="display-5 col-md-8">Data Set</h1>
