@@ -148,10 +148,26 @@
       </dl>  
 	    
 	    <h4> Synthetic Dataset </h4>
-	    <p> TODO </p>
+	    <p> As part of the first milestone, we had generated a synthetic dataset to be used for the viewer. This is done by running 
+		a script to configure the PBRT with different camera positions and execute it to render the scene. As a result of this, 
+		the synthetic dataset captured different parts of the focal plane. The ray tracing method used in light field rendering, 
+		however, requires that each of the images in the dataset show the same part of the focal plane but in different camera 
+		positions. This requires modifying the view frustrum depending on the camera position, and, given the possible inputs 
+		to PBRT, it has proven to be difficult to accomplish. To work around this, we instead decided to fix the camera's 
+		look-at point. While the resulting images do not exactly match the requirements, this method provides a rough estimate 
+		that is good enough to be used in the viewer. </p>
 	    
 	    <h4> Stanford Dataset </h4>
-	    <p> TODO </p>
+	    <p> As a proof of concept, we also utilized two datasets provided in Stanford Computer Graphics Laboratory's old light field 
+		data archives: the dragon and buddha datasets. Both datasets have 32x32 images, each with a dimension of 256x256 pixels.
+	    </p>
+	    
+	    <div class="row pt-5">
+	    	<div class="col-md-6">
+			<img src="./images/hw3/gifs/outward_rotation.gif " class="img-fluid" alt="original_wireframe">
+			<p class = "text-center m-auto"><small> Buddha </small> </p>
+		</div>
+	    </div>
 	    
 	    
       <dl class="row mt-5">
