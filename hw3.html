@@ -170,7 +170,7 @@
 	    </p>
 	    
 	    <div class="row pt-5">
-	    	<div class="col-md-6">
+	    	<div class="col-md-6 text-center m-auto">
 			<img src="./images/hw3/gifs/outward_rotation.gif " class="img-fluid" alt="original_wireframe">
 			<p class = "text-center m-auto"><small> Buddha </small> </p>
 		</div>
@@ -189,21 +189,98 @@
 	    
 	    <h4> Interpolation Method </h4>
 	    <ol>
-		    <li> <h3> Nearest Neighbor </h3>
-			    <p> TODO </p>
+	      <li>
+		<h3> Nearest Neighbor </h3>
+		<p> It's very easy to implement nearest neighbor sampling in the lightfield viewer using ray tracing. From a camera position, we shoot out very single ray to each pixel on the view port. Then, tracing the ray, we find the intersected points on UV plane(Camera Plane) and ST plane(Focal Plane). Then, from the real
+		  value instersecting points, we find the nearest grid point on the two planes to retrieve the corrosponding pixel color from them and color it on the viewport to
+		  render our "new" images.</p>
+		<div class="row pt-5">
+	    	  <div class="col-md-6">
+		    <img src="./images/hw3/gifs/nearest_neightbor.gif" class="img-fluid" alt="original_wireframe">
+		    <p class = "text-center m-auto"><small> The glass ball </small> </p>
+		  </div>
+		  <div class="col-md-6">
+		    <img src="./images/hw3/gifs/dragon_nearest.gif" class="img-fluid" alt="original_wireframe">
+		    <p class = "text-center m-auto"><small> Dragon </small> </p>
+		  </div>
+
+		</div>
+
 		    </li>
 		    
 		    <li> <h3> Bilinear (ST) </h3>
-			    <p> TODO </p>
+		      <p>To further remove the alising on the image, we use a bilinear interpolation on the image plane(ST). As a result, when we zoom in, we will find out
+		      the aliasing effect caused by scaling up would be smoothed out a little.</p>
 		    </li>
+		    <div class="row pt-5">
+	    	      <div class="text-center col-md-6 m-auto">
+			<img src="./images/hw3/gifs/with_or_without_bilinear_st.gif" class="img-fluid" alt="original_wireframe">
+			<p class = "text-center m-auto"><small> With or without bilinear on ST </small> </p>
+		      </div>
+		    </div>
 		    
 		    <li> <h3> Bilinear (UV) </h3>
-			    <p> TODO </p>
+		      <p>Similarly, in order to remove the aliasing caused by movement of the virtual camera around the sence, we apply bilinear interpolation on UV plane
+			to average out one point's pixel from two different camera. As a result, we can see a bluring effect when a ray lands between two different camera position
+			instead of dramatic zigzag aliasing.</p>
+		      <div class="row pt-5">
+	    		<div class="col-md-6">
+			  <img src="./images/hw3/gifs/bilinear_on_uv.gif" class="img-fluid" alt="original_wireframe">
+			  <p class = "text-center m-auto"><small>Fly around using bilinear on UV </small> </p>
+			</div>
+			<div class="col-md-6">
+			  <img src="./images/hw3/gifs/bi_near.gif" class="img-fluid" alt="original_wireframe">
+			  <p class = "text-center m-auto"><small>Difference between bilinear and nearest neightbor </small> </p>
+			</div>
+		      </div>		      
 		    </li>
 		    
-		    <li> <h3> Quadrilinear </h3>
-			    <p> TODO </p>
-		    </li>
+	      <li>
+		<h3> Quadrilinear </h3>
+		<p> Combining both bilinear interpolation on UV and ST planes, we can achieve a satisfactory results. For one ray and one pixel on the viewport, we consider
+		  16 different pixel values.
+		</p>
+
+		<div class="row">
+		  <div class="col-md-4">
+		    <img src="./images/hw3/gifs/qualinear.gif" class="img-fluid" alt="original_wireframe">
+		    <p class = "text-center m-auto"><small>Fly around on Glass Ball </small> </p>
+		  </div>
+		  <div class="col-md-4">
+		    <img src="./images/hw3/gifs/bi_qd.gif" class="img-fluid" alt="original_wireframe">
+		    <p class = "text-center m-auto"><small>Bilinear on UV to Quadrilinear transition on Glass Ball</small> </p>
+		  </div>
+		  <div class="col-md-4">
+		    <img src="./images/hw3/gifs/bilinear_qualinear.gif" class="img-fluid" alt="original_wireframe">
+		    <p class = "text-center m-auto"><small>Bilinear on UV to Quadrilinear transition on buddha</small> </p>
+		  </div>
+
+		</div>
+
+	      </li>
+	      <li>
+		<h3> Three different views using different interpolation method (Nearest, Bilinear on UV and Quadrilinear on ST) </h3>
+		<p>Check the animation below </p>
+		<div class="row">
+		  <div class="col-md-4">
+		    <img src="./images/hw3/gifs/dragon_nearest.gif" class="img-fluid" alt="original_wireframe">
+		    <p class = "text-center m-auto"><small>Dragon Nearest </small> </p>
+		  </div>
+
+		  <div class="col-md-4">
+		    <img src="./images/hw3/gifs/dragon_bilinear_uv.gif" class="img-fluid" alt="original_wireframe">
+		    <p class = "text-center m-auto"><small>Dragon Bilinear </small> </p>
+		  </div>
+		  
+		  <div class="col-md-4">
+		    <img src="./images/hw3/gifs/dragon_qualinear.gif" class="img-fluid" alt="original_wireframe">
+		    <p class = "text-center m-auto"><small>Dragon Quadrilinear </small> </p>
+		  </div>
+
+		</div>
+
+
+	      </li>
 	    </ol>
 	    
 	    
@@ -211,8 +288,19 @@
 	<h1 class="display-5 col-md-8">Add on</h1>
       </dl>  
 	    
-	    <h4> Aperture Plane </h4>
-	    <p> TODO </p>
+      <h3> Aperture Plane </h3>
+      <p>Since we are using raytracing, it's very trivial to apply aperture and focus effects on our 'new' images rendered by our virtual camera. But like the raytrcing rendering,
+	it is very time consuming to render new images. The following figure on the left is the real-time aperture adjustment while on the right is the one speeded up using software.
+      </p>
+      <div class="row">
+	<div class="col-md-6">
+	  <img src="./images/hw3/gifs/focus_refocus.gif" class="img-fluid" alt="original_wireframe">
+	  <p class = "text-center m-auto"><small>Real Speed </small> </p>
+	</div>
+	<div class="col-md-6">
+	  <img src="./images/hw3/gifs/focus_refocus_10x.gif" class="img-fluid" alt="original_wireframe">
+	  <p class = "text-center m-auto"><small>10X speed up </small> </p>
+	</div>
 	    
     </div>
 
