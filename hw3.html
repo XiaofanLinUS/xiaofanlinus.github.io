@@ -125,13 +125,20 @@
       </dl>    
 	    
 	    <h4> VirtualCamera </h4>
-	    <p> TODO </p>
+	    <p> This class can be thought of as the center class. It contains information about the viewer's camera, the camera plane, 
+		and the focal plane. Because of this, the functions to interact with the camera through translations and rotations, the 
+		functions for ray tracing and interpolation, as well as the functions for rendering the pixels into a buffer are found 
+		in this class. </p>
 	    
 	    <h4> ImagePlane </h4>
-	    <p> TODO </p>
+	    <p> Acting as the camera plane's class, this class mainly contains the array of Images that represent the image plane and 
+		whose camera positions represent the camera plane. This class is responsible for the logic that loads the images from a 
+		directory into memory as well as placing the images in their appropriate indices in the image array. </p>
 	    
 	    <h4> Image </p>
-	    <p> TODO </p>
+	    <p> As the name suggests, this class represents a single image in the image plane. It holds an array of pixels, the 
+		dimensions of the image, and the position of the camera on the camera plane where the image was rendered. It also holds 
+		the function to read in an image file into memory. </p>
 	    
 	    
      <dl class="row mt-5">
